@@ -8,7 +8,7 @@ const sendWelcomeEmail = (email, name) => {
         from: 'siddharth9k9@gmail.com',
         subject: 'Thanks for joining in!',
         text: `Welcome to the app, ${name}. Let me know how you get along with the app.`
-    })
+    })//ad
 }
 
 const sendCancelationEmail = (email, name) => {
