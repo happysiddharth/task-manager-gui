@@ -63,9 +63,15 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 })
 
 router.get('/users/me', auth, async (req, res) => {
+    let image ="images/profile-2092113_960_720.webp";
+    if(req.user.avatar){
+         image = new Buffer(req.user.avatar, 'binary').toString('base64');
+
+    }
+    
     res.render('profile',{
         "user":req.user,
-        "avatar":new Buffer(req.user.avatar, 'binary').toString('base64')
+        "avatar":"data:image/png;base64,"+image
     })
  
 })
