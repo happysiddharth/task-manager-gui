@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>{{name}}</title>
+	<title>{{user.name}}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -26,9 +26,9 @@
 	<div class="contact1">
 		<div class="container-contact1">
 			<div class="contact1-pic js-tilt" >
-				<img src="../../images/profile-2092113_960_720.webp" alt="IMG">
+				<img  src="data:image/png;base64,{{avatar}}" alt="IMG">
                 <div>
-    <form method="POST" action="me/avatar">
+    <form method="POST" action="me/avatar" enctype="multipart/form-data">
         <input type="file" name="avatar" >
         <input type="submit" value="Upload">
     </form>

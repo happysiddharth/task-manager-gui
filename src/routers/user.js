@@ -64,9 +64,10 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 
 router.get('/users/me', auth, async (req, res) => {
     res.render('profile',{
-        "user":req.user
+        "user":req.user,
+        "avatar":new Buffer(req.user.avatar, 'binary').toString('base64')
     })
-  //  res.send(req.user)
+ 
 })
 
 router.patch('/users/me', auth, async (req, res) => {
@@ -120,10 +121,11 @@ const upload = multer({
 })
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
+   
     const image = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
     req.user.avatar = image
     await req.user.save()
-    res.send()
+    res.redirect('/users/me')
 }, (error, req, res, next) => {
     res.status(400).send({ error: error.message })
 })
