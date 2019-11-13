@@ -66,12 +66,13 @@ router.get('/users/me', auth, async (req, res) => {
     let image ="images/profile-2092113_960_720.webp";
     if(req.user.avatar){
          image = new Buffer(req.user.avatar, 'binary').toString('base64');
+         image="data:image/png;base64,"+image;
 
     }
     
     res.render('profile',{
         "user":req.user,
-        "avatar":"data:image/png;base64,"+image
+        "avatar":image
     })
  
 })
