@@ -4,6 +4,7 @@
 	<title>{{name}}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
 <!--===============================================================================================-->
@@ -109,6 +110,11 @@ document.querySelector('#form').addEventListener('submit',function(e){
           },success:function(c){
               console.log(c);
           },complete:function(){
+
+			  swal("Good job!", "Task Created!", "success");
+				  document.querySelector('#description').value='';
+				  document.querySelector('#description').focus();
+		
             
           }
       })
