@@ -8,27 +8,37 @@ const router = new express.Router()
 
 router.post('/users', async (req, res) => {
     const user = new User(req.body)
-
     try {
         await user.save()
         sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
-        res.status(201).send({ user, token })
+       
+        res.status(201).send({user})
     } catch (e) {
         res.status(400).send(e)
     }
 })
 
-router.post('/users/login', async (req, res) => {
+
+router.post('/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
-        res.send({ user, token })
+            res.cookie("Authorization", token)
+
+       res.redirect('/add_task')
+        
     } catch (e) {
         res.status(400).send(e)
     }
 })
+router.get('/add_task',auth,(req,res)=>{
 
+    res.render('add_task',{
+        "name": req.user.name
+    })
+     
+})
 router.post('/users/logout', auth, async (req, res) => {
     try {
         req.user.tokens = req.user.tokens.filter((token) => {
@@ -53,18 +63,29 @@ router.post('/users/logoutAll', auth, async (req, res) => {
 })
 
 router.get('/users/me', auth, async (req, res) => {
-    res.send(req.user)
+    res.render('profile',{
+        "user":req.user
+    })
+  //  res.send(req.user)
 })
 
 router.patch('/users/me', auth, async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['name', 'email', 'password', 'age']
+    const allowedUpdates = ['name', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
         return res.status(400).send({ error: 'Invalid updates!' })
     }
-
+    if(req.body['password']==''){
+        updates.splice(2,1)
+    }
+    if(req.body['name']==''){
+        updates.splice(0,1)
+    }
+    if(req.body['age']==''){
+        updates.splice(1,1)
+    }
     try {
         updates.forEach((update) => req.user[update] = req.body[update])
         await req.user.save()
@@ -85,6 +106,7 @@ router.delete('/users/me', auth, async (req, res) => {
 })
 
 const upload = multer({
+   
     limits: {
         fileSize: 1000000
     },
@@ -98,8 +120,8 @@ const upload = multer({
 })
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-    const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
-    req.user.avatar = buffer
+    const image = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+    req.user.avatar = image
     await req.user.save()
     res.send()
 }, (error, req, res, next) => {

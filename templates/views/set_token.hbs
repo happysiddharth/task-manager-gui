@@ -1,0 +1,19 @@
+<script>
+  localStorage.setItem("token", '{{token}}');
+  var myHeaders = new Headers();    
+  myHeaders.set('Authorization','{{token}}');
+  var {Cc, Ci} = require("chrome");
+var httpRequestObserver =
+{
+  observe: function(subject, topic, data) 
+  {
+    if (topic == "http-on-modify-request") {
+      var httpChannel = subject.QueryInterface(Ci.nsIHttpChannel);
+      httpChannel.setRequestHeader("Authorization", "{{token}}", false);
+    }
+  }
+};
+ 
+ window.location.href ='/add_task';
+ //onsol.log('as');
+</script>

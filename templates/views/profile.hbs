@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{{name}}</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="../../images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="../../css/util2.css">
+	<link rel="stylesheet" type="text/css" href="../../css/main2.css">
+<!--===============================================================================================-->
+</head>
+<body>
+
+	<div class="contact1">
+		<div class="container-contact1">
+			<div class="contact1-pic js-tilt" >
+				<img src="../../images/profile-2092113_960_720.webp" alt="IMG">
+                <div>
+    <form method="POST" action="me/avatar">
+        <input type="file" name="avatar" >
+        <input type="submit" value="Upload">
+    </form>
+</div>
+			</div>
+
+			<form class="contact1-form validate-form" id="form"method="post" action="/users/me" enctype="application/x-www-form-urlencoded">
+				<span class="contact1-form-title">
+					Update profile
+				</span>
+
+				<div class="wrap-input1 validate-input" data-validate = "Name is required">
+					<input class="input1" type="text" name="name"id="name" placeholder="Name" value="{{user.name}}">
+					<span class="shadow-input1"></span>
+				</div>
+
+				
+                <div class="wrap-input1 validate-input" >
+					<input class="input1" type="email" name="email" id="email" placeholder="Email" value="{{user.email}}" disabled>
+					<span class="shadow-input1"></span>
+				</div>
+                 <div class="wrap-input1 validate-input" >
+					<input class="input1" type="text" name="age" id="age" placeholder="Age" value="{{user.age}}">
+					<span class="shadow-input1" ></span>
+				</div>
+                <div class="wrap-input1 validate-input" >
+					<input class="input1" type="password" name="password" id="password" placeholder="Update password" >
+					<span class="shadow-input1"></span>
+				</div>
+
+			
+
+				<div class="container-contact1-form-btn">
+					<button class="contact1-form-btn" id="btn">
+						<span>
+							Update Profile
+							<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+						</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+
+<!--===============================================================================================-->
+	<script src="../../vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../../vendor/bootstrap/js/popper.js"></script>
+	<script src="../../vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../../vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="../../vendor/tilt/tilt.jquery.min.js"></script>
+	<script >
+		$('.js-tilt').tilt({
+			scale: 1.1
+		})
+	</script>
+
+
+
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<script type="text/javascript">
+document.querySelector('#form').addEventListener('submit',function(e){
+    e.preventDefault();
+    let name = document.querySelector('#name').value;
+    // let email = document.querySelector('#email').value;
+      let password = document.querySelector('#password').value;
+       let age = document.querySelector('#age').value;
+ 
+     
+     $.ajax({
+          method:"patch",
+          url:'/users/me',
+          data:{
+            name,age,password
+
+          }
+          
+          ,beforeSend:function(){
+            
+
+          },success:function(c){
+              console.log(c);
+          },complete:function(){
+            
+          }
+      })
+})
+     
+	</script>
+
+</body>
+</html>
